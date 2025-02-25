@@ -96,12 +96,14 @@ export const registerUser = async (userData) => {
 };
 
 export const fetchUserProfile = async (userId) => {
-  const token = await getToken();
-  console.log('Гараар шалгаж байна, токен:', token);
-  return api.get(`/users/${userId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-};
+    try {
+      const response = await api.get(`/users/${userId}`);
+      console.log('fetchUserProfile response.data:', response.data); // Шалгах
+      return response.data; 
+    } catch (error) {
+      throw new Error(error.response?.data?.error || 'Профайл авахад алдаа гарлаа');
+    }
+  };
 
 export const fetchProducts = async () => {
   const token = await getToken();
